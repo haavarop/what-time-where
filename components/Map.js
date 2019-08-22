@@ -9,10 +9,34 @@ import { interpolateRdBu, interpolateRainbow } from "d3-scale-chromatic"
 import { scaleSequential } from "d3-scale"
  
 const Map = () =>  {
+  let selectedAreas = [];
   
   useEffect(() => {
     createMap();
   })
+
+  function handleClick(d,i) {
+    const area = select(this);
+
+    if (selectedAreas.includes(i)) {
+      area.attr("opacity", "0");
+      selectedAreas = selectedAreas.filter(j => j !== i);
+    } else {
+      area.attr("opacity", "1")
+      selectedAreas.push(i);
+    }
+  }
+
+  function handleMouseOver(d,i) {
+    if (selectedAreas.includes(i)) return;
+    select(this).attr("opacity", "0.5")
+
+  }
+  
+  function handleMouseOut(d,i) {
+    if (selectedAreas.includes(i)) return;
+    select(this).attr("opacity", "0")
+  }
 
   const createMap = async () =>  {
     const svg = select("#parent")
@@ -32,17 +56,20 @@ const Map = () =>  {
     const color = scaleSequential(extent(zones, f => f.properties.zone), interpolateRainbow);
     
     const width = 975;
-
     const [[x0, y0], [x1, y1]] = geoPath(projection.fitWidth(width, outline)).bounds(outline);
     const dy = Math.ceil(y1 - y0), l = Math.min(Math.ceil(x1 - x0), dy);
     projection.scale(projection.scale() * (l - 1) / l).precision(0.2);
-      
+
     svg.selectAll("path")
       .data(zones)
       .enter()
       .append("path")
       .attr("d", d => path(d))
-      .attr("fill", d => color(d.properties.zone))
+      .attr("fill", d  => color(d.properties.zone))
+      .attr("opacity", "0")
+      .on("click", handleClick)
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut)
       .append("title")
       .text(d => `${d.properties.places} ${d.properties.time_zone}`)
 
