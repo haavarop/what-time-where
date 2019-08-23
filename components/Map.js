@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { select } from "d3-selection";
 import { json } from "d3-fetch";
 import * as topojson from "topojson-client";
@@ -8,23 +8,30 @@ import { extent } from "d3-array"
 import { interpolateRdBu, interpolateRainbow } from "d3-scale-chromatic"
 import { scaleSequential } from "d3-scale"
  
-const Map = () =>  {
+const Map = (props) =>  {
+  // Prevent createMap from being called more than once 
+  const [isRendered, setIsRenderd] = useState(true);
+  
   let selectedAreas = [];
   
   useEffect(() => {
     createMap();
-  })
+  }, [isRendered])
 
   function handleClick(d,i) {
     const area = select(this);
-
+  
+    // Remove items
     if (selectedAreas.includes(i)) {
       area.attr("opacity", "0");
-      selectedAreas = selectedAreas.filter(j => j !== i);
+      selectedAreas = selectedAreas.filter(j => j !== i); 
+    // Add items
     } else {
       area.attr("opacity", "1")
       selectedAreas.push(i);
     }
+    props.onTimeZoneClick([...selectedAreas])
+
   }
 
   function handleMouseOver(d,i) {
@@ -46,7 +53,7 @@ const Map = () =>  {
     const timezones = await json("https://gist.githubusercontent.com/mbostock/f0ae25cf1f057d443ca903277e3eb330/raw/254996390d4e19ef5eb1429103e0138ad08e19d0/timezones.json")
     const mesh = topojson.mesh(timezones, timezones.objects.timezones)
     const zones = topojson.feature(timezones, timezones.objects.timezones).features
-
+    
     const graticule = geoGraticule().stepMinor([15, 10])()
     const outline = ({type: "Sphere"})
 
@@ -59,7 +66,7 @@ const Map = () =>  {
     const [[x0, y0], [x1, y1]] = geoPath(projection.fitWidth(width, outline)).bounds(outline);
     const dy = Math.ceil(y1 - y0), l = Math.min(Math.ceil(x1 - x0), dy);
     projection.scale(projection.scale() * (l - 1) / l).precision(0.2);
-
+    
     svg.selectAll("path")
       .data(zones)
       .enter()
@@ -98,7 +105,7 @@ const Map = () =>  {
 
   return <svg  
     id="parent"
-    viewBox={`0 2 975 711`}
+    viewBox={`0 2 2000 2000`}
     strokeLinejoin="round"
   />;
 }
