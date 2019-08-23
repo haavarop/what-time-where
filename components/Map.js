@@ -112,7 +112,7 @@ const Map = (props) =>  {
 
   return <svg  
     id="parent"
-    viewBox={`0 2 2000 2000`}
+    viewBox={`0 2 975 711`}
     strokeLinejoin="round"
   />;
 }
