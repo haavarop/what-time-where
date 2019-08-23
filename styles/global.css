@@ -9,3 +9,9 @@ h5,
 h6 {
   font-family: "Nunito", sans-serif;
 }
+
+.map-container {
+  max-width: 600px;
+  display: block;
+  margin: auto;
+}
