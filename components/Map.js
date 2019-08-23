@@ -18,30 +18,37 @@ const Map = (props) =>  {
     createMap();
   }, [isRendered])
 
-  function handleClick(d,i) {
+  function handleClick(d,i) {    
     const area = select(this);
-  
-    // Remove items
-    if (selectedAreas.includes(i)) {
-      area.attr("opacity", "0");
-      selectedAreas = selectedAreas.filter(j => j !== i); 
-    // Add items
-    } else {
-      area.attr("opacity", "1")
-      selectedAreas.push(i);
+    
+    const timezoneDataItem = {
+      id: i,
+      ...d.properties,
+      color: area.attr("fill")
     }
+
+    // Remove items
+    if (selectedAreas.find(area => area.id === i)) {      
+      area.attr("opacity", "0");
+      selectedAreas = selectedAreas.filter(j => j.id !== i)
+    // Add items
+    } else {      
+      area.attr("opacity", "1")
+      selectedAreas.push(timezoneDataItem)
+    }
+
     props.onTimeZoneClick([...selectedAreas])
 
   }
 
   function handleMouseOver(d,i) {
-    if (selectedAreas.includes(i)) return;
+    if (selectedAreas.find(area => area.id === i)) return;
     select(this).attr("opacity", "0.5")
 
   }
   
   function handleMouseOut(d,i) {
-    if (selectedAreas.includes(i)) return;
+    if (selectedAreas.find(area => area.id === i)) return;
     select(this).attr("opacity", "0")
   }
 

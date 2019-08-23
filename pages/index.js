@@ -7,10 +7,7 @@ const Home = () => {
   const [timezonesToShow, setTimezonesToShow] = useState([])
   return (
     <div>
-      {timezonesToShow.map(t => {
-        return <p>{t}</p>
-      })}
-      <TimeList timeZones={timezonesToShow}/>
+      <TimeList timezones={timezonesToShow}/>
       <Map onTimeZoneClick={setTimezonesToShow}/>
     </div>
   )
