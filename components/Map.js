@@ -11,7 +11,6 @@ import { scaleSequential } from "d3-scale"
 const Map = (props) =>  {
   // Prevent createMap from being called more than once 
   const [isRendered, setIsRenderd] = useState(true);
-  
   let selectedAreas = [];
   
   useEffect(() => {
@@ -110,11 +109,11 @@ const Map = (props) =>  {
       .attr("fill", "none")
   }
 
-  return <svg  
-    id="parent"
-    viewBox={`0 2 975 711`}
-    strokeLinejoin="round"
-  />;
+  return (
+    <svg viewBox={`0 2 975 711`} strokeLinejoin="round">
+      <g id="parent"></g>
+    </svg>
+  )
 }
   
   export default Map;
