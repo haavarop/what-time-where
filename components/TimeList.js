@@ -20,9 +20,11 @@ const TimeList = (props) => {
 
   return(
       <div className="timezones">
-        {timezones.map(zone => {
-          return <TimeItem {...zone}/>
-        })}
+        {timezones.length > 0 ? 
+          (timezones.map(zone =>  <TimeItem {...zone}/>)) 
+          : 
+          (<h3>Click on a part of the map to see the time there</h3>)
+        }
       </div>
     );
 }
