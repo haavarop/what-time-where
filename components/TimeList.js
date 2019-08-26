@@ -8,7 +8,7 @@ const TimeList = (props) => {
   
   useEffect(() => {
     const timerID = setInterval( () => tick(), 1000 );
-  
+    
     return function cleanup() {
         clearInterval(timerID);
       };
@@ -21,7 +21,7 @@ const TimeList = (props) => {
   return(
       <div className="timezones">
         {timezones.length > 0 ? 
-          (timezones.map(zone =>  <TimeItem {...zone}/>)) 
+          (timezones.map(zone =>  <TimeItem {...zone} key={zone.id}/>)) 
           : 
           (<h3>Click on a part of the map to see the time there</h3>)
         }

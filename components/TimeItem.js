@@ -18,7 +18,7 @@ const TimeItem = props => {
 
   return (
     <div style={{backgroundColor: color}} className="item-container">
-      <h4 className="text">{tz_name1st ? tz_name1st.replace("_", " ") : places} (UTC+{name})</h4>
+      <h4 className="text">{tz_name1st ? tz_name1st.replace("_", " ") : places} (UTC{name})</h4>
       <h2 className="text">{calculateLocalDate()}</h2>
     </div>
   );
