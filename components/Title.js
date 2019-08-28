@@ -3,10 +3,10 @@ import "../styles/Title.css";
 
 const Title = () => {
   return (
-    <>
-      <h1 className="text">What time where!</h1>
-      <h3 className="text">What time is where in the world?</h3>    
-    </>
+    <div className="text">
+      <h1 >What time where!</h1>
+      <h3 >What time is where in the world?</h3>    
+    </div>
   );
 }
 
